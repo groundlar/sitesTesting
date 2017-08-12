@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Web Bluetooth Testing</title>
+</head>
+<body>
+<script>
+function doWbt() {
+    console.log('Requesting any Bluetooth Device...');
+    return navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+      })
+    .then(device => {
+      console.log('Attempting connection');
+      return device.gatt.connect()
+    })
+    .then(server => {
+    log('Getting Services...');
+        return server.getPrimaryServices();
+    })
+    .catch(error => {
+      console.log('Argh! ' + error);
+    });
+  }
+</script>
+
+<button onclick="doWbt()"> Do WebBT</button>
+</body>
+
