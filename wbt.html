@@ -18,8 +18,18 @@ function doWbt() {
       return device.gatt.connect()
     })
     .then(server => {
-    log('Getting Services...');
-        return server.getPrimaryServices();
+      log('Getting Services...');
+      return server.getPrimaryServices();
+    })
+    .then(service => {
+      log('Getting Characteristics...');
+      if (characteristicUuid) {
+        // Get all characteristics that match this UUID.
+        return service.getCharacteristics(characteristicUuid);
+    })
+    .then(characteristics => {
+      log('> Characteristics: ' +
+        characteristics.map(c => c.uuid).join('\n' + ' '.repeat(19)));
     })
     .catch(error => {
       console.log('Argh! ' + error);
