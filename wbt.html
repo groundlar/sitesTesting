@@ -26,6 +26,7 @@ function doWbt() {
       if (characteristicUuid) {
         // Get all characteristics that match this UUID.
         return service.getCharacteristics(characteristicUuid);
+      }
     })
     .then(characteristics => {
       log('> Characteristics: ' +
