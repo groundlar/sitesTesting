@@ -34,8 +34,10 @@ function doWbt() {
     .then(characteristic => {
       const encoder = new TextEncoder();
       const packet = encoder.encode('foobar').buffer;
+      console.log(`writing ${packet} to characteristic`);
       return characteristic.writeValue(packet);
     })
+    .then(() => { console.log('successfully wrote to characteristic');})
     .catch(error => {
       console.log('Argh! ' + error);
     });
