@@ -9,28 +9,32 @@
 <body>
 <script>
 function doWbt() {
+    var SERVICE_UUID = '00001104-0001-1000-8000-001a11000100';
+    var CHARACTERISTIC_UUID = '00002400-0001-1000-8000-001a11000100';
+
     console.log('Requesting any Bluetooth Device...');
+
     return navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
+      filters: 
+        [{services: [SERVICE_UUID]}],
+        optionalServices: [SERVICE_UUID]
       })
     .then(device => {
       console.log('Attempting connection');
-      return device.gatt.connect()
+      return device.gatt.connect();
     })
     .then(server => {
-      log('Getting Services...');
-      return server.getPrimaryServices();
+      log('Getting Service...');
+      return server.getPrimaryService(SERVICE_UUID);
     })
     .then(service => {
-      log('Getting Characteristics...');
-      if (characteristicUuid) {
-        // Get all characteristics that match this UUID.
-        return service.getCharacteristics(characteristicUuid);
-      }
+      log('Getting Characteristic...');
+      return service.getCharacteristic(CHARACTERISTIC_UUID);
     })
-    .then(characteristics => {
-      log('> Characteristics: ' +
-        characteristics.map(c => c.uuid).join('\n' + ' '.repeat(19)));
+    .then(characteristic => {
+      const encoder = new TextEncoder();
+      const packet = encoder.encode('foobar').buffer;
+      return characteristic.writeValue(packet);
     })
     .catch(error => {
       console.log('Argh! ' + error);
