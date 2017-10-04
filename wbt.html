@@ -24,11 +24,11 @@ function doWbt() {
       return device.gatt.connect();
     })
     .then(server => {
-      log('Getting Service...');
+      console.log('Getting Service...');
       return server.getPrimaryService(SERVICE_UUID);
     })
     .then(service => {
-      log('Getting Characteristic...');
+      console.log('Getting Characteristic...');
       return service.getCharacteristic(CHARACTERISTIC_UUID);
     })
     .then(characteristic => {
